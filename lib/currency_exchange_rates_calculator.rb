@@ -1,7 +1,6 @@
 require 'json'
 require './lib/exchange_path_finder'
 require './lib/exchange_rates_hash'
-require 'pp'
 
 class CurrencyExchangeRatesCalculator
 
@@ -25,7 +24,7 @@ class CurrencyExchangeRatesCalculator
 
     rate = 1
 
-    until path.size < 2
+    until path.size == 1
       rate *= exchange_rates_hash.deep_fetch(*path.last(2))
       path.pop
     end
