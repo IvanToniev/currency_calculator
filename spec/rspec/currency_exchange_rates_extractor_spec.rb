@@ -15,7 +15,13 @@ describe CurrencyExchangeRatesExtractor do
     end
   end
 
-  describe '#complex_exchange' do
-    pp CurrencyExchangeRatesExtractor.new("BGN").complex_exchange("GBP")
+  describe '#path_names' do
+    it 'returns the way to the target' do
+      expect(CurrencyExchangeRatesExtractor.new("BGN").exchange_path("AUD")).to eq(["BGN", "EUR", "GBP", "AUD"])
+    end
   end
+
+  # describe '#complex_exchange' do
+  #   pp CurrencyExchangeRatesExtractor.new("BGN").complex_exchange("GBP")
+  # end
 end

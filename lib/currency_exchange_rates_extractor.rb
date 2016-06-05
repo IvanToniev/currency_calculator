@@ -21,6 +21,10 @@ class CurrencyExchangeRatesExtractor
     selected_rate.rate
   end
 
+  def exchange_path target_name
+    Graph.new(exchange_rates_hash.clone, @currency_name).path(target_name, exchange_rates_hash.clone[@currency_name])
+  end
+
   # def complex_exchange prev, second_currency
   #   hash = exchange_rates_hash.clone
   #   rate = 1
@@ -49,6 +53,7 @@ end
 class Graph
   def initialize hash, parent_node_name
     @hash = hash
+    @parent_node_name = parent_node_name
   end
 
   def graph_edges parent_name, edge_hash
@@ -70,6 +75,47 @@ class Graph
 
     edges
   end
+
+  def path target_name, current_hash
+    path = path_names(target_name, current_hash, [@parent_node_name]) << @parent_node_name
+    return path.reverse
+  end
+
+  def path_names target_name, current_hash, visited_hash_names
+    names = []
+    not_visited_hashes = []
+
+    visited_hash_names.each do |name|
+      current_hash.delete(name)
+    end
+
+    if current_hash[target_name]
+      names << target_name
+      return names
+    end
+
+    current_hash.each do |currency_name, exchange_rate|
+      not_visited_hashes << {currency_name => @hash[currency_name]} if @hash[currency_name].is_a? Hash
+    end
+
+    return [] if not_visited_hashes.empty?
+
+    until not_visited_hashes.empty?
+      visited_hash_names = visited_hash_names << not_visited_hashes.last.keys.first
+      result = path_names(target_name, not_visited_hashes.last.values.first, visited_hash_names)
+
+      last_visited = not_visited_hashes.pop
+
+      unless result.empty?
+        names << result
+        names << last_visited.keys.first
+        return names.flatten if result.first == target_name
+      end
+    end
+
+    return names.flatten
+  end
+
 
   def nodes parent_name
     rates = []
