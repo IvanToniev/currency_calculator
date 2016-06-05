@@ -6,11 +6,18 @@ class ExchangePathFinder
 
   def path target_name, current_hash
     path = path_stops(target_name, current_hash, [@path_start_name]) << @path_start_name
+
+    # no path to the currency
+    return [] if path.size == 1
+
     return path.reverse
   end
 
   private
   def path_stops target_name, current_hash, visited_hash_names
+    return [] unless current_hash
+    return [] if target_name.empty?
+
     stop_names = []
     not_visited_hashes = []
 
