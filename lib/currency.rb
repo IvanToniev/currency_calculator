@@ -1,3 +1,5 @@
+require './lib/currency_exchange_rates_calculator'
+
 class Currency
   #array of exchange rate object
   attr_accessor :name

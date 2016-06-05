@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Currency do
-  let(:currency) {Currency.new("EUR")}
+  let(:currency) {Currency.new("BGN")}
 
   describe '#exchange_rate' do
     it 'returns the exchange rate between the two currencies' do
-      expect(currency.exchange_rate("BRL")).to eq(3.9973)
+      expect(currency.exchange_rate("AUD")).to eq(3.9973)
     end
   end
 

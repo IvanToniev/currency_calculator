@@ -18,11 +18,9 @@ class CurrencyExchangeRatesCalculator
     path = ExchangePathFinder.new(exchange_rates_hash.clone, @currency_name).path(target_name, exchange_rates_hash.clone[@currency_name])
     rate = 1
 
-    path_clone = path.clone
-
-    until path_clone.size == 1
-      rate *= exchange_rates_hash.deep_fetch(*path_clone)
-      path_clone.pop
+    until path.size < 2
+      rate *= exchange_rates_hash.deep_fetch(*path.last(2))
+      path.pop
     end
 
     rate
