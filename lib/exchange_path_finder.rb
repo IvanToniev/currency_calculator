@@ -16,6 +16,7 @@ class ExchangePathFinder
   private
   def path_stops target_name, current_hash, visited_hash_names
     return [] unless current_hash
+    return [] if target_name.nil?
     return [] if target_name.empty?
 
     stop_names = []
